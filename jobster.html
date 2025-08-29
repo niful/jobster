@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jobster - Найди свою идеальную работу</title>
+    <style>
+        /* Сброс и базовые стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #4a6cfa;
+            --primary-dark: #3a57c8;
+            --secondary: #ff6b6b;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --gray: #dfe6e9;
+            --success: #00b894;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Анимационный фон */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: move 15s infinite alternate ease-in-out;
+        }
+
+        .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            top: -150px;
+            left: -150px;
+            animation-duration: 20s;
+        }
+
+        .shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(45deg, var(--secondary), var(--success));
+            bottom: -100px;
+            right: 10%;
+            animation-duration: 18s;
+            animation-delay: 1s;
+        }
+
+        .shape:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(45deg, var(--success), var(--primary));
+            top: 20%;
+            right: -75px;
+            animation-duration: 25s;
+            animation-delay: 0.5s;
+        }
+
+        .shape:nth-child(4) {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(45deg, var(--primary-dark), var(--secondary));
+            bottom: 10%;
+            left: 5%;
+            animation-duration: 22s;
+            animation-delay: 2s;
+        }
+
+        @keyframes move {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            100% {
+                transform: translate(20px, 20px) rotate(360deg);
+            }
+        }
+
+        /* Контейнеры и секции */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        /* Шапка и навигация */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(74, 108, 250, 0.3);
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(74, 108, 250, 0.4);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Герой секция */
+        .hero {
+            text-align: center;
+            padding: 120px 0 80px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+            opacity: 0;
+            animation: fadeIn 1s forwards 0.5s;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: #636e72;
+            opacity: 0;
+            animation: fadeIn 1s forwards 1s;
+        }
+
+        /* Форма поиска */
+        .search-form {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeInUp 1s forwards 1.5s;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--gray);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74, 108, 250, 0.2);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        /* Секция вакансий */
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.2rem;
+            color: var(--dark);
+        }
+
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .job-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+            animation-delay: calc(0.2s * var(--i));
+        }
+
+        .job-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .job-card-content {
+            padding: 25px;
+        }
+
+        .job-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .job-company {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .job-description {
+            color: #636e72;
+            margin-bottom: 20px;
+        }
+
+        .job-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .job-tag {
+            background-color: var(--light);
+            color: var(--primary-dark);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Форма размещения вакансии */
+        .post-job {
+            background-color: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Футер */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column a {
+            color: #dfe6e9;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+
+        /* Мобильное меню */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        /* Утилиты */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .mt-40 {
+            margin-top: 40px;
+        }
+
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: modalFadeIn 0.3s;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #636e72;
+            background: none;
+            border: none;
+        }
+
+        /* Уведомление */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background-color: var(--success);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Анимационный фон -->
+    <div class="background-animation">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Шапка -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">Job<span>ster</span></a>
+                <ul class="nav-links">
+                    <li><a href="#gg">Главная</a></li>
+                    <li><a href="#jobs">Вакансии</a></li>
+                    <li><a href="#post">Разместить вакансию</a></li>
+                    <li><a href="#about">О нас</a></li>
+                </ul>
+                <button class="mobile-menu-btn">☰</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Герой секция -->
+    <section class="hero" id="gg">
+        <div class="container">
+            <h1>Найди свою идеальную работу</h1>
+            <p>Jobster помогает соискателям и работодателям найти друг друга. Размещайте вакансии, ищите работу и развивайте карьеру вместе с нами.</p>
+            <a href="#jobs" class="btn">Найти вакансии</a>
+        </div>
+    </section>
+
+    <!-- Поиск вакансий -->
+    <section>
+        <div class="container">
+            <div class="search-form">
+                <h2 class="text-center">Поиск вакансий</h2>
+                <form id="searchForm">
+                    <div class="form-group">
+                        <label for="keywords">Ключевые слова</label>
+                        <input type="text" id="keywords" class="form-control" placeholder="Должность, навыки или компания">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="location">Местоположение</label>
+                            <input type="text" id="location" class="form-control" placeholder="Город или регион">
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Категория</label>
+                            <select id="category" class="form-control">
+                                <option value="">Все категории</option>
+                                <option value="it">IT и программирование</option>
+                                <option value="marketing">Маркетинг</option>
+                                <option value="sales">Продажи</option>
+                                <option value="finance">Финансы</option>
+                                <option value="design">Дизайн</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Найти вакансии</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Популярные вакансии -->
+    <section id="jobs">
+        <div class="container">
+            <h2 class="section-title">Популярные вакансии</h2>
+            <div class="jobs-grid" id="jobsContainer">
+                <!-- Вакансии будут добавлены через JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Размещение вакансии -->
+    <section id="post" style="background-color: #f8f9fa;">
+        <div class="container">
+            <h2 class="section-title">Разместить вакансию</h2>
+            <div class="post-job">
+                <form id="jobForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="jobTitle">Название вакансии</label>
+                            <input type="text" id="jobTitle" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Компания</label>
+                            <input type="text" id="company" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="jobDescription">Описание вакансии</label>
+                        <textarea id="jobDescription" class="form-control" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="requirements">Требования</label>
+                        <textarea id="requirements" class="form-control" required></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contactEmail">Контактный email</label>
+                            <input type="email" id="contactEmail" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="categoryPost">Категория</label>
+                            <select id="categoryPost" class="form-control" required>
+                                <option value="">Выберите категорию</option>
+                                <option value="it">IT и программирование</option>
+                                <option value="marketing">Маркетинг</option>
+                                <option value="sales">Продажи</option>
+                                <option value="finance">Финансы</option>
+                                <option value="design">Дизайн</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Разместить вакансию</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer id="about">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>Jobster</h4>
+                    <p>Лучшая платформа для поиска работы и найма сотрудников. Мы соединяем таланты с возможностями.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Ссылки</h4>
+                    <ul>
+                        <li><a href="#gg">Главная</a></li>
+                        <li><a href="#jobs">Вакансии</a></li>
+                        <li><a href="#post">Разместить вакансию</a></li>
+                        <li><a href="#about">О нас</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Ресурсы</h4>
+                    <ul>
+                        <li><a href="#">Блог</a></li>
+                        <li><a href="#">Помощь</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Контакты</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Подписка</h4>
+                    <p>Подпишитесь на нашу рассылку, чтобы получать уведомления о новых вакансиях.</p>
+                    <form>
+                        <div class="form-group">
+                            <input type="email" class="form-control" placeholder="Ваш email" style="margin-top: 10px;">
+                        </div>
+                        <button type="submit" class="btn btn-outline" style="width: 100%; margin-top: 10px;">Подписаться</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Jobster. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно вакансии -->
+    <div class="modal" id="jobModal">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h2 id="modalTitle"></h2>
+            <p class="job-company" id="modalCompany"></p>
+            <div id="modalDescription"></div>
+            <h3 style="margin-top: 20px;">Требования</h3>
+            <div id="modalRequirements"></div>
+            <p style="margin-top: 20px;"><strong>Контактная информация:</strong> <span id="modalContact"></span></p>
+        </div>
+    </div>
+
+    <!-- Уведомление -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Инициализация данных
+            const jobs = [
+                {
+                    id: 1,
+                    title: "Frontend разработчик",
+                    company: "TechSolutions Inc.",
+                    description: "Мы ищем опытного Frontend разработчика для работы над современными веб-приложениями.",
+                    requirements: "Опыт работы с React, JavaScript, HTML5, CSS3. Знание TypeScript будет плюсом.",
+                    contact: "hr@techsolutions.com",
+                    category: "it",
+                    tags: ["React", "JavaScript", "HTML5", "CSS3"]
+                },
+                {
+                    id: 2,
+                    title: "Маркетолог",
+                    company: "DigitalAgency",
+                    description: "Присоединяйтесь к нашей команде в качестве маркетолога для разработки и реализации стратегий.",
+                    requirements: "Опыт в digital-маркетинге, знание Google Analytics, SEO, SMM.",
+                    contact: "career@digitalagency.com",
+                    category: "marketing",
+                    tags: ["Marketing", "SEO", "SMM", "Analytics"]
+                },
+                {
+                    id: 3,
+                    title: "Финансовый аналитик",
+                    company: "FinanceCorp",
+                    description: "Мы ищем финансового аналитика для анализа данных и подготовки отчетов.",
+                    requirements: "Высшее образование в области финансов, опыт работы от 2 лет, знание Excel.",
+                    contact: "jobs@financecorp.com",
+                    category: "finance",
+                    tags: ["Финансы", "Анализ", "Excel", "Отчетность"]
+                },
+                {
+                    id: 4,
+                    title: "UX/UI дизайнер",
+                    company: "CreativeStudio",
+                    description: "Присоединяйтесь к нашей команде в качестве дизайнера для создания креативных интерфейсов.",
+                    requirements: "Опыт работы в Figma, Adobe Creative Suite, понимание принципов UX.",
+                    contact: "hello@creativestudio.com",
+                    category: "design",
+                    tags: ["Figma", "UI", "UX", "Дизайн"]
+                },
+                {
+                    id: 5,
+                    title: "Менеджер по продажам",
+                    company: "SalesPro",
+                    description: "Мы ищем активного менеджера по продажам для расширения нашей клиентской базы.",
+                    requirements: "Опыт продаж, коммуникабельность, целеустремленность.",
+                    contact: "info@salespro.com",
+                    category: "sales",
+                    tags: ["Продажи", "Коммуникация", "Клиенты"]
+                },
+                {
+                    id: 6,
+                    title: "Backend разработчик",
+                    company: "ServerSide Ltd.",
+                    description: "Требуется опытный Backend разработчик для работы над высоконагруженными системами.",
+                    requirements: "Опыт работы с Node.js, Python или Java, знание баз данных, понимание принципов REST API.",
+                    contact: "dev@serverside.com",
+                    category: "it",
+                    tags: ["Node.js", "Python", "Java", "Базы данных"]
+                }
+            ];
+
+            // Отображение вакансий
+            const jobsContainer = document.getElementById('jobsContainer');
+            
+            function renderJobs(jobsToRender) {
+                jobsContainer.innerHTML = '';
+                
+                jobsToRender.forEach((job, index) => {
+                    const jobCard = document.createElement('div');
+                    jobCard.className = 'job-card';
+                    jobCard.style.setProperty('--i', index);
+                    
+                    jobCard.innerHTML = `
+                        <div class="job-card-content">
+                            <h3>${job.title}</h3>
+                            <span class="job-company">${job.company}</span>
+                            <p class="job-description">${job.description}</p>
+                            <div class="job-tags">
+                                ${job.tags.map(tag => `<span class="job-tag">${tag}</span>`).join('')}
+                            </div>
+                            <button class="btn btn-outline see-details" data-id="${job.id}">Подробнее</button>
+                        </div>
+                    `;
+                    
+                    jobsContainer.appendChild(jobCard);
+                });
+                
+                // Добавляем обработчики для кнопок "Подробнее"
+                document.querySelectorAll('.see-details').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const jobId = parseInt(this.getAttribute('data-id'));
+                        const job = jobs.find(j => j.id === jobId);
+                        showJobDetails(job);
+                    });
+                });
+            }
+            
+            // Поиск вакансий
+            const searchForm = document.getElementById('searchForm');
+            searchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const keywords = document.getElementById('keywords').value.toLowerCase();
+                const location = document.getElementById('location').value.toLowerCase();
+                const category = document.getElementById('category').value;
+                
+                const filteredJobs = jobs.filter(job => {
+                    let matches = true;
+                    
+                    if (keywords) {
+                        matches = matches && (
+                            job.title.toLowerCase().includes(keywords) ||
+                            job.company.toLowerCase().includes(keywords) ||
+                            job.description.toLowerCase().includes(keywords) ||
+                            job.tags.some(tag => tag.toLowerCase().includes(keywords))
+                        );
+                    }
+                    
+                    if (category) {
+                        matches = matches && job.category === category;
+                    }
+                    
+                    // В реальном приложении здесь бы учитывалось местоположение
+                    if (location) {
+                        // Для демонстрации просто проверяем наличие текста в компании
+                        matches = matches && job.company.toLowerCase().includes(location);
+                    }
+                    
+                    return matches;
+                });
+                
+                renderJobs(filteredJobs);
+                
+                // Показываем уведомление о количестве найденных вакансий
+                showNotification(`Найдено вакансий: ${filteredJobs.length}`);
+            });
+            
+            // Размещение вакансии
+            const jobForm = document.getElementById('jobForm');
+            jobForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const newJob = {
+                    id: jobs.length + 1,
+                    title: document.getElementById('jobTitle').value,
+                    company: document.getElementById('company').value,
+                    description: document.getElementById('jobDescription').value,
+                    requirements: document.getElementById('requirements').value,
+                    contact: document.getElementById('contactEmail').value,
+                    category: document.getElementById('categoryPost').value,
+                    tags: extractTags(document.getElementById('jobDescription').value)
+                };
+                
+                jobs.push(newJob);
+                renderJobs(jobs);
+                
+                // Очищаем форму
+                jobForm.reset();
+                
+                // Показываем уведомление
+                showNotification('Вакансия успешно размещена!');
+            });
+            
+            // Вспомогательная функция для извлечения тегов из описания
+            function extractTags(description) {
+                const words = description.split(' ');
+                return words.filter(word => word.length > 3 && Math.random() > 0.7).slice(0, 4);
+            }
+            
+            // Модальное окно с деталями вакансии
+            const modal = document.getElementById('jobModal');
+            const closeModalBtn = document.querySelector('.close-modal');
+            
+            function showJobDetails(job) {
+                document.getElementById('modalTitle').textContent = job.title;
+                document.getElementById('modalCompany').textContent = job.company;
+                document.getElementById('modalDescription').textContent = job.description;
+                document.getElementById('modalRequirements').textContent = job.requirements;
+                document.getElementById('modalContact').textContent = job.contact;
+                
+                modal.style.display = 'flex';
+            }
+            
+            closeModalBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            window.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // Уведомления
+            function showNotification(message) {
+                const notification = document.getElementById('notification');
+                notification.textContent = message;
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+            
+            // Плавная прокрутка для якорных ссылок
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Инициализация - отображаем все вакансии при загрузке
+            renderJobs(jobs);
+        });
+    </script>
+</body>
+</html>
